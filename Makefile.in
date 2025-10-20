@@ -1,0 +1,38 @@
+.PHONY: all podman-image mathworks-image custom-image install uninstall
+
+all:
+	wget -O matlab-icon.png https://upload.wikimedia.org/wikipedia/commons/4/4b/Matlab_icon.png
+ifneq (${additional_products},)
+	wget -O Dockerfile https://raw.githubusercontent.com/mathworks-ref-arch/matlab-dockerfile/refs/heads/main/alternates/building-on-matlab-docker-image/Dockerfile
+endif
+
+install: podman-image matlab-icon.png
+	mkdir -p ${prefix}/bin ${prefix}/share/applications ${prefix}/share/matlab-${tag}
+	cp matlab ${prefix}/bin/matlab-${tag}
+	cp matlab.desktop ${prefix}/share/applications/matlab-${tag}.desktop
+	cp matlab-icon.png ${prefix}/share/matlab-${tag}/matlab-icon.png
+	update-desktop-database
+	mkdir -p ${home}/{.MATLABConnector,.MathWorks,.matlab} ${home}/Documents/MATLAB
+
+uninstall:
+	podman image rm localhost/matlab:${matlab_release} docker.io/mathworks/matlab:${matlab_release}
+	rm -fr ${prefix}/bin/matlab-${tag} ${prefix}/share/applications/matlab-${tag}.desktop ${prefix}/share/matlab-${tag}/matlab-icon.png ${prefix}/share/matlab-${tag}
+	update-desktop-database
+
+ifeq (${additional_products},)
+podman-image: mathworks-image
+else
+podman-image: custom-image
+endif
+
+custom-image: Dockerfile podman-build.conf
+	podman pull docker.io/mathworks/matlab:${matlab_release}
+	podman tag docker.io/mathworks/matlab:${matlab_release} mathworks/matlab:${tag}
+	podman build --build-arg-file podman-build.conf \
+	             --tag localhost/matlab:${matlab_release} .
+	podman image rm mathworks/matlab:${matlab_release}
+
+mathworks-image:
+	podman pull docker.io/mathworks/matlab:${matlab_release}
+	podman tag docker.io/mathworks/matlab:${matlab_release} localhost/matlab:${tag}
+

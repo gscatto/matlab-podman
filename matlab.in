@@ -1,0 +1,13 @@
+#!/bin/sh
+podman run --rm \
+           --tty \
+           -e DISPLAY=$$DISPLAY \
+           -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
+           -v $$XAUTHORITY:/home/matlab/.Xauthority:ro \
+           --shm-size=512M \
+           --userns=keep-id:uid=1001,gid=1001 \
+           -v ${home}/.MATLABConnector:/home/matlab/.MATLABConnector \
+           -v ${home}/.MathWorks:/home/matlab/.MathWorks \
+           -v ${home}/.matlab:/home/matlab/.matlab \
+           -v ${home}/Documents/MATLAB:/home/matlab/Documents/MATLAB \
+           localhost/matlab:${tag}

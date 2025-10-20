@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=${desktop_entry_name}
+Type=Application
+Exec=${prefix}/bin/matlab-${tag}
+Icon=${prefix}/share/matlab-${tag}/matlab-icon.png
+GenericName=Scientific computing platform
+Categories=Development
