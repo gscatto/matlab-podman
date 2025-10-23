@@ -26,7 +26,7 @@ Install the project under `$HOME/.local`.
 
 Search `MATLAB` in the application launcher or `matlab` with auto-completion support in the terminal to discover the available MATLAB versions installed. In the case the application does not come up in the application launcher right away, logout and login.
 
-Containers share `$HOME/Documents/MATLAB` with the host. Also, `$HOME/.MathWorks`, `$HOME/.MATLABConnector`, `$HOME/.matlab` are being mounted for session and settings persistence.
+Containers share `$HOME/Documents/MATLAB` with the host. Also, `$HOME/.MathWorks`, `$HOME/.MATLABConnector`, `$HOME/.matlab` are being mounted for session and settings persistence. Containers inherit Git configuration file `$HOME/.gitconfig`, too.
 
 The first run might take a bit to take off. The command `podman ps` may halt until the container starts.
 

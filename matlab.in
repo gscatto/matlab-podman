@@ -10,4 +10,5 @@ podman run --rm \
            -v ${home}/.MathWorks:/home/matlab/.MathWorks \
            -v ${home}/.matlab:/home/matlab/.matlab \
            -v ${home}/Documents/MATLAB:/home/matlab/Documents/MATLAB \
+           -v ${home}/.gitconfig:/home/matlab/.gitconfig \
            localhost/matlab:${tag}
